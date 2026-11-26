@@ -1,19 +1,18 @@
 # cool_fox · VIctory for Windows
 
-## Run the codec_d Windows build
+## Build and run on Windows
 
-The packaged launcher uses a Series S profile tested on NVIDIA. The [GPU residency journal](docs/bug-journal.md) records tests on an RTX 5090.
-
-Download and extract the Windows x64 ZIP from the [latest release](https://github.com/codec-d/cool_fox/releases/latest). Open PowerShell in the extracted folder and point the launcher at your own complete Xbox dump.
+Install the Rust toolchain pinned in `rust-toolchain.toml` and the MSVC C++ build tools with a Windows SDK. From PowerShell in the checkout, build the Windows runner and point the launcher at your own complete Xbox dump.
 
 ```powershell
+cargo build --release --locked -p victory
 $env:VICTORY_GAME_DIR = 'D:\Games\MyDump'
 .\Play-VIctory.cmd pareto-residency
 ```
 
-The launcher builds its shader cache locally under `%LOCALAPPDATA%\VIctory\cache-pareto`. Set `VICTORY_CACHE_DIR` to reuse an existing cache outside the checkout. Windows x64, an AVX2 CPU, and a Direct3D 12 GPU with shader model 6.6 and mesh shader support are required.
+The launcher finds `target\release\victory.exe` in a source build. If you already have the Windows x64 ZIP, extract it and run the last two commands in the extracted folder.
 
-To build from this checkout, install the pinned Rust toolchain and the MSVC C++ build tools with a Windows SDK, then run `cargo build --release --locked -p victory`. The same launcher finds `target\release\victory.exe`. The sections below describe the upstream AMD fork and its separate launcher.
+`Play-VIctory.cmd` selects Series S and the RTX-tested residency settings. The shader cache defaults to `%LOCALAPPDATA%\VIctory\cache-pareto`. Set `VICTORY_CACHE_DIR` to choose a different cache directory. The runner requires Windows x64, an AVX2 CPU, and a Direct3D 12 GPU with shader model 6.6 and mesh shader support. The [GPU residency journal](docs/bug-journal.md) records tests on an RTX 5090.
 
 ## Upstream AMD fork
 
